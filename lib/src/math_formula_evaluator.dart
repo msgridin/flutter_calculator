@@ -46,7 +46,7 @@ class MathFormulaEvaluator {
       if (mark.isNumber) {
         valueStack.add(mark.toNumber());
       } else {
-        MathOperatorSymbol operator = mark.symbols.first;
+        MathOperatorSymbol operator = mark.symbols.first as MathOperatorSymbol;
         List<double> operands = [];
 
         for (int j = operator.fnArgs; valueStack.isNotEmpty && j > 0; j--) {
@@ -85,10 +85,10 @@ class MathFormulaEvaluator {
       }
       // Process operator
       else if (symbol.isOperator) {
-        _Mark top;
+        _Mark? top;
         while ((top = opsStack.length > 0 ? opsStack.last : null) != null &&
-            top.isOperator &&
-            this._needToPopupMark(top, symbol)) {
+            top!.isOperator &&
+            this._needToPopupMark(top, symbol as MathOperatorSymbol)) {
           opsStack.removeLast();
           output.add(top);
         }
@@ -101,8 +101,8 @@ class MathFormulaEvaluator {
       }
       // Process right bracket
       else if (symbol.isRightBracket) {
-        _Mark top;
-        while ((top = opsStack.length > 0 ? opsStack.last : null) != null && (top.isOperator || !top.isLeftBracket)) {
+        _Mark? top;
+        while ((top = opsStack.length > 0 ? opsStack.last : null) != null && (top!.isOperator || !top!.isLeftBracket)) {
           opsStack.removeLast();
           output.add(top);
         }
@@ -115,9 +115,9 @@ class MathFormulaEvaluator {
       }
     }
 
-    _Mark top;
+    _Mark? top;
     while ((top = opsStack.length > 0 ? opsStack.last : null) != null) {
-      if (top.isLeftBracket) {
+      if (top!.isLeftBracket) {
         throw 'No matched right bracket';
       } else if (top.isRightBracket) {
         throw 'No matched left bracket';
@@ -156,7 +156,7 @@ class MathFormulaEvaluator {
   }
 
   bool _needToPopupMark(_Mark topMark, MathOperatorSymbol currentSymbol) {
-    MathOperatorSymbol topSymbol = topMark.symbols.first;
+    MathOperatorSymbol topSymbol = topMark.symbols.first as MathOperatorSymbol;
 
     return (currentSymbol.isLeftCombination && currentSymbol.priority <= topSymbol.priority) ||
         (currentSymbol.isRightCombination && currentSymbol.priority < topSymbol.priority);

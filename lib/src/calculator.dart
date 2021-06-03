@@ -25,10 +25,10 @@ import './keypad.dart';
 import './auto_size_editable_text.dart';
 
 class Calculator extends StatefulWidget {
-  final String expr;
+  final String? expr;
   final MathFormulaViewController formulaViewController;
 
-  Calculator({this.expr, this.formulaViewController});
+  Calculator({this.expr, required this.formulaViewController});
 
   @override
   State<StatefulWidget> createState() =>
@@ -41,7 +41,7 @@ class _CalculatorState extends State<Calculator> {
   final KeyPadController _keyPadController = KeyPadController([MathSymbols.undo, MathSymbols.redo]);
   final TextEditingController _formulaResultController = TextEditingController();
 
-  _CalculatorState({String expr, MathFormulaViewController formulaViewController})
+  _CalculatorState({required String? expr, required MathFormulaViewController? formulaViewController})
       : this._formulaViewController = formulaViewController ?? MathFormulaViewController(expr: expr);
 
   @override
@@ -87,15 +87,17 @@ class _CalculatorState extends State<Calculator> {
             children: <Widget>[
               MathFormulaView(this._formulaViewController),
               AutoSizeEditableText(
+                context: context,
                 readOnly: true,
                 autofocus: false,
+                showCursor: false,
                 maxLines: 1,
                 focusNode: FocusNode(),
                 controller: this._formulaResultController,
                 minFontSize: 14.0,
                 style: TextStyle(
                   fontSize: 14.0 * 3.0,
-                  color: theme.primaryTextTheme.title.color,
+                  color: theme.primaryColor,
                 ),
                 textAlign: TextAlign.right,
                 cursorColor: Colors.grey,
@@ -139,9 +141,9 @@ class _CalculatorState extends State<Calculator> {
 }
 
 class CalculatorDialog extends StatefulWidget {
-  final String expr;
+  final String? expr;
 
-  const CalculatorDialog({Key key, this.expr}) : super(key: key);
+  const CalculatorDialog({required this.expr}) : super();
 
   @override
   State<StatefulWidget> createState() => _CalculatorDialogState(this.expr);
@@ -150,7 +152,7 @@ class CalculatorDialog extends StatefulWidget {
 class _CalculatorDialogState extends State<CalculatorDialog> {
   final MathFormulaViewController _formulaViewController;
 
-  _CalculatorDialogState(String expr) : this._formulaViewController = MathFormulaViewController(expr: expr);
+  _CalculatorDialogState(String? expr) : this._formulaViewController = MathFormulaViewController(expr: expr);
 
   @override
   void dispose() {
@@ -216,14 +218,12 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
 }
 
 Future<double> showCalculator({
-  @required BuildContext context,
-  String expr,
-  Locale locale,
-  TextDirection textDirection,
-  TransitionBuilder builder,
+  required BuildContext context,
+  String? expr,
+  Locale? locale,
+  TextDirection? textDirection,
+  TransitionBuilder? builder,
 }) async {
-  assert(context != null);
-
   Widget child = CalculatorDialog(
     expr: expr,
   );
@@ -243,7 +243,7 @@ Future<double> showCalculator({
     );
   }
 
-  return await showDialog<double>(
+  return await showDialog(
     context: context,
     builder: (BuildContext context) {
       return builder == null ? child : builder(context, child);

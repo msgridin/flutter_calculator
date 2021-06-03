@@ -37,8 +37,8 @@ class MathFormula {
   final List<_History> _redoHistories = [];
 
   List<MathSymbol> _symbols;
-  MathFormulaValidator _validator;
-  MathFormulaEvaluator _evaluator;
+  late MathFormulaValidator _validator;
+  late MathFormulaEvaluator _evaluator;
 
   int _cursor = INVALID_CURSOR;
 
@@ -56,7 +56,7 @@ class MathFormula {
     return this._symbols.map<String>((MathSymbol symbol) => stringifySymbol(symbol)).join();
   }
 
-  void process(int cursor, MathSymbol symbol) {
+  void process(int cursor, MathSymbol? symbol) {
     switch (symbol) {
       case MathSymbols.redo:
         return this.redo();
@@ -122,25 +122,25 @@ class MathFormula {
     return this._symbols.getRange(start, end == -1 ? this._symbols.length : end).toList();
   }
 
-  MathSymbol getSymbol(int index) {
+  MathSymbol? getSymbol(int index) {
     return index < 0 || index >= this._symbols.length ? null : this._symbols.elementAt(index);
   }
 
-  MathSymbol getLeftSymbol(int index) {
+  MathSymbol? getLeftSymbol(int index) {
     return index <= 0 || index >= this._symbols.length ? null : this.getSymbol(index - 1);
   }
 
-  MathSymbol getRightSymbol(int index) {
+  MathSymbol? getRightSymbol(int index) {
     return index < 0 || index >= this._symbols.length - 1 ? null : this.getSymbol(index + 1);
   }
 
   void _applyHistory(_History history) {
     if (history._cursor != null) {
-      this._cursor = history._cursor;
+      this._cursor = history._cursor!;
     }
 
     if (history._symbols != null) {
-      this._symbols = [...history._symbols];
+      this._symbols = [...?history._symbols];
     }
   }
 
@@ -164,7 +164,7 @@ class MathFormula {
     this._cursor = INVALID_CURSOR;
   }
 
-  void _addSymbolAtCursor(MathSymbol symbol) {
+  void _addSymbolAtCursor(MathSymbol? symbol) {
     if (!this._validator.isAccepted(this.cursor, symbol)) {
       return;
     }
@@ -179,7 +179,7 @@ class MathFormula {
   }
 
   void _deleteSymbolAtCursor() {
-    MathSymbol currentSymbol = this.getSymbol(this.cursor);
+    MathSymbol? currentSymbol = this.getSymbol(this.cursor);
     if (currentSymbol == null) {
       return;
     }
@@ -189,7 +189,7 @@ class MathFormula {
         this._removeRightBracketSymbolAtCursor();
         break;
       case MathSymbols.left_bracket:
-        MathSymbol rightSymbol = this.getRightSymbol(this.cursor);
+        MathSymbol? rightSymbol = this.getRightSymbol(this.cursor);
 
         if (rightSymbol == null) {
           this._removeSymbolAtCursor();
@@ -203,9 +203,11 @@ class MathFormula {
     }
   }
 
-  void _insertSymbolAtCursor(MathSymbol symbol) {
-    this._symbols.insert(this.cursor + 1, symbol);
-    this._cursor += 1;
+  void _insertSymbolAtCursor(MathSymbol? symbol) {
+    if (symbol != null) {
+      this._symbols.insert(this.cursor + 1, symbol);
+      this._cursor += 1;
+    }
   }
 
   void _removeSymbolAtCursor() {
@@ -225,11 +227,11 @@ class MathFormula {
     List<MathSymbol> rightBrackets = <MathSymbol>[];
 
     while (index >= 0) {
-      MathSymbol symbol = this.getSymbol(index);
+      MathSymbol? symbol = this.getSymbol(index);
 
-      if (symbol.isRightBracket) {
-        rightBrackets.add(symbol);
-      } else if (symbol.isLeftBracket) {
+      if (symbol?.isRightBracket ?? false) {
+        rightBrackets.add(symbol!);
+      } else if (symbol?.isLeftBracket ?? false) {
         if (rightBrackets.isNotEmpty) {
           rightBrackets.removeLast();
         } else {
@@ -246,8 +248,8 @@ class MathFormula {
 }
 
 class _History {
-  final List<MathSymbol> _symbols;
-  final int _cursor;
+  final List<MathSymbol>? _symbols;
+  final int? _cursor;
 
   _History(this._cursor, this._symbols);
 }

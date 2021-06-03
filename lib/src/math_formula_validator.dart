@@ -22,13 +22,13 @@ class MathFormulaValidator {
 
   MathFormulaValidator(MathFormula formula) : this._formula = formula;
 
-  bool isAccepted(int index, MathSymbol symbol) {
+  bool isAccepted(int index, MathSymbol? symbol) {
     if (symbol == null || symbol.isController) {
       return false;
     }
 
-    MathSymbol leftSymbol = this._formula.getSymbol(index);
-    MathSymbol rightSymbol = this._formula.getRightSymbol(index);
+    MathSymbol? leftSymbol = this._formula.getSymbol(index);
+    MathSymbol? rightSymbol = this._formula.getRightSymbol(index);
 
     if (symbol == MathSymbols.sign) {
       // [ Op | ( ] ± [ Num | . ]
@@ -44,7 +44,7 @@ class MathFormulaValidator {
         return true;
       }
 
-      MathSymbol moreLeftSymbol = this._formula.getLeftSymbol(index);
+      MathSymbol? moreLeftSymbol = this._formula.getLeftSymbol(index);
       // Num . % [ Op | ) ]
       return (leftSymbol != null && leftSymbol.isDecimal && moreLeftSymbol != null && moreLeftSymbol.isNumber) &&
           (rightSymbol == null || rightSymbol.isOperator || rightSymbol.isRightBracket);
@@ -68,11 +68,14 @@ class MathFormulaValidator {
         return false;
       }
 
-      MathSymbol nonNumKey = this
-          ._formula
-          .getSymbols(0, end: index)
-          .reversed
-          .firstWhere((MathSymbol k) => !k.isNumber, orElse: () => null);
+      MathSymbol? nonNumKey;
+      try {
+        nonNumKey = this
+            ._formula
+            .getSymbols(0, end: index)
+            .reversed
+            .firstWhere((MathSymbol k) => !k.isNumber);
+      } catch(e) {}
 
       if (nonNumKey != null && nonNumKey.isDecimal) {
         return false;
@@ -83,7 +86,10 @@ class MathFormulaValidator {
         return false;
       }
 
-      nonNumKey = this._formula.getSymbols(index + 1).firstWhere((MathSymbol k) => !k.isNumber, orElse: () => null);
+      try {
+      nonNumKey = this._formula.getSymbols(index + 1).firstWhere((MathSymbol k) => !k.isNumber);
+      } catch(e) {}
+
       return nonNumKey == null || !nonNumKey.isDecimal;
     }
     // For operator

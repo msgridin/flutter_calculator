@@ -77,9 +77,9 @@ typedef MathSymbolOnPress = void Function(MathSymbol symbol);
 
 class KeyPad extends StatefulWidget {
   final MathSymbolOnPress onPress;
-  final KeyPadController controller;
+  final KeyPadController? controller;
 
-  const KeyPad({Key key, @required this.onPress, this.controller}) : super(key: key);
+  const KeyPad({required this.onPress, this.controller}) : super();
 
   @override
   State<StatefulWidget> createState() => _KeyPadState();
@@ -89,7 +89,7 @@ class _KeyPadState extends State<KeyPad> {
   @override
   void initState() {
     if (this.widget.controller != null) {
-      this.widget.controller.addListener(this._handleChangedDisabledKeys);
+      this.widget.controller?.addListener(this._handleChangedDisabledKeys);
     }
 
     super.initState();
@@ -98,7 +98,7 @@ class _KeyPadState extends State<KeyPad> {
   @override
   void dispose() {
     if (this.widget.controller != null) {
-      this.widget.controller.removeListener(this._handleChangedDisabledKeys);
+      this.widget.controller?.removeListener(this._handleChangedDisabledKeys);
     }
 
     super.dispose();
@@ -129,7 +129,7 @@ class _KeyPadState extends State<KeyPad> {
         child: Text(
           symbol.text,
           style: TextStyle(
-            color: isClear ? theme.primaryTextTheme.title.color : Colors.grey,
+            color: isClear ? theme.primaryColor : Colors.grey,
             fontSize: 14.0 * 3.0,
           ),
         ),
@@ -155,7 +155,7 @@ class _KeyPadState extends State<KeyPad> {
 
     final List<Widget> opPads = opSymbols.map<Widget>((MathSymbol symbol) {
       final Widget opPad = this._createOpSymbolPad(context, symbol);
-      final Color opPadColor = (opPad is FlatButton) ? opPad.color : null;
+      final Color? opPadColor = (opPad is FlatButton) ? opPad.color : null;
 
       return Expanded(
         child: Container(
@@ -185,7 +185,7 @@ class _KeyPadState extends State<KeyPad> {
     final double fontSize = 14.0 * 1.5;
     final ShapeBorder shape = const RoundedRectangleBorder(borderRadius: BorderRadius.zero);
 
-    Color opPadColor;
+    Color opPadColor = theme.primaryColor;
     Widget opPad;
     bool disabled = this._isDisabledKey(symbol);
 
@@ -194,7 +194,7 @@ class _KeyPadState extends State<KeyPad> {
         opPadColor = theme.primaryColor;
         opPad = Text(
           symbol.text,
-          style: TextStyle(color: theme.primaryTextTheme.title.color, fontSize: fontSize),
+          style: TextStyle(color: theme.primaryColor, fontSize: fontSize),
         );
         break;
       default:
@@ -268,7 +268,7 @@ class _KeyPadState extends State<KeyPad> {
   }
 
   bool _isDisabledKey(MathSymbol symbol) {
-    return this.widget.controller != null ? this.widget.controller._disabledKeys.contains(symbol) : false;
+    return this.widget.controller != null ? this.widget.controller!._disabledKeys.contains(symbol) : false;
   }
 }
 
@@ -282,7 +282,7 @@ class KeyPadController extends ChangeNotifier {
       return;
     }
 
-    this._disabledKeys = keys != null ? [...keys] : [];
+    this._disabledKeys = [...keys];
 
     notifyListeners();
   }

@@ -148,12 +148,16 @@ class MathOperatorSymbol extends MathSymbol {
   bool get isRightCombination => this.combination == _MathSymbolCombination.right;
 }
 
-List<MathSymbol> parseFormula(String formula) {
+List<MathSymbol> parseFormula(String? formula) {
   List<MathSymbol> symbols = <MathSymbol>[];
 
   for (int i = 0; i < (formula ?? '').length; i++) {
-    String text = formula[i];
-    MathSymbol key = _visibleSymbols.firstWhere((key) => key.text == text, orElse: () => null);
+    String? text = formula?[i];
+    MathSymbol? key;
+
+    try {
+      key = _visibleSymbols.firstWhere((key) => key.text == text);
+    } catch(e) {}
 
     if (key != null) {
       symbols.add(key);

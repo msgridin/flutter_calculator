@@ -32,7 +32,7 @@ class AutoSizeEditableText extends EditableText {
   /// Predefines all the possible font sizes.
   ///
   /// **Important:** PresetFontSizes have to be in descending order.
-  final List<double> presetFontSizes;
+  late final List<double> presetFontSizes;
 
   /// Whether words which don't fit in one line should be wrapped.
   ///
@@ -40,17 +40,19 @@ class AutoSizeEditableText extends EditableText {
   /// into a single line.
   final bool wrapWords;
 
+  final BuildContext context;
+
   AutoSizeEditableText({
-    Key key,
-    @required controller,
-    @required focusNode,
+    required this.context,
+    required controller,
+    required focusNode,
     readOnly = false,
     obscureText = false,
     autocorrect = true,
-    @required style,
-    StrutStyle strutStyle,
-    @required cursorColor,
-    @required backgroundCursorColor,
+    required style,
+    required cursorColor,
+    required backgroundCursorColor,
+    required showCursor,
     textAlign = TextAlign.start,
     textDirection,
     locale,
@@ -61,11 +63,9 @@ class AutoSizeEditableText extends EditableText {
     forceLine = true,
     textWidthBasis = TextWidthBasis.parent,
     autofocus = false,
-    bool showCursor,
     showSelectionHandles = false,
     selectionColor,
     selectionControls,
-    TextInputType keyboardType,
     textInputAction,
     textCapitalization = TextCapitalization.none,
     onChanged,
@@ -73,7 +73,6 @@ class AutoSizeEditableText extends EditableText {
     onSubmitted,
     onSelectionChanged,
     onSelectionHandleTapped,
-    List<TextInputFormatter> inputFormatters,
     rendererIgnoresPointer = false,
     cursorWidth = 2.0,
     cursorRadius,
@@ -86,61 +85,61 @@ class AutoSizeEditableText extends EditableText {
     enableInteractiveSelection = true,
     scrollController,
     scrollPhysics,
-    toolbarOptions = const ToolbarOptions(copy: true, cut: true, paste: true, selectAll: true),
+    toolbarOptions = const ToolbarOptions(
+        copy: true, cut: true, paste: true, selectAll: true),
     this.minFontSize = 12.0,
     this.maxFontSize = double.infinity,
-    this.presetFontSizes,
     this.stepGranularity = 1,
     this.wrapWords = true,
   }) : super(
-          key: key,
-          controller: controller,
-          focusNode: focusNode,
-          readOnly: readOnly,
-          obscureText: obscureText,
-          autocorrect: autocorrect,
-          style: style,
-          strutStyle: strutStyle,
-          cursorColor: cursorColor,
-          backgroundCursorColor: backgroundCursorColor,
-          textAlign: textAlign,
-          textDirection: textDirection,
-          locale: locale,
-          textScaleFactor: textScaleFactor,
-          maxLines: maxLines,
-          minLines: minLines,
-          expands: expands,
-          forceLine: forceLine,
-          autofocus: autofocus,
-          showCursor: showCursor,
-          showSelectionHandles: showSelectionHandles,
-          selectionColor: selectionColor,
-          selectionControls: selectionControls,
-          keyboardType: keyboardType,
-          textInputAction: textInputAction,
-          onChanged: onChanged,
-          onEditingComplete: onEditingComplete,
-          onSubmitted: onSubmitted,
-          onSelectionChanged: onSelectionChanged,
-          onSelectionHandleTapped: onSelectionHandleTapped,
-          rendererIgnoresPointer: rendererIgnoresPointer,
-          cursorWidth: cursorWidth,
-          cursorRadius: cursorRadius,
-          cursorOpacityAnimates: cursorOpacityAnimates,
-          cursorOffset: cursorOffset,
-          paintCursorAboveText: paintCursorAboveText,
-          keyboardAppearance: keyboardAppearance,
-          enableInteractiveSelection: enableInteractiveSelection,
-          scrollController: scrollController,
-          scrollPhysics: scrollPhysics,
-        );
+    controller: controller,
+    focusNode: focusNode,
+    readOnly: readOnly,
+    obscureText: obscureText,
+    autocorrect: autocorrect,
+    style: style,
+    cursorColor: cursorColor,
+    backgroundCursorColor: backgroundCursorColor,
+    textAlign: textAlign,
+    textDirection: textDirection,
+    locale: locale,
+    textScaleFactor: textScaleFactor,
+    maxLines: maxLines,
+    minLines: minLines,
+    expands: expands,
+    forceLine: forceLine,
+    autofocus: autofocus,
+    showSelectionHandles: showSelectionHandles,
+    selectionColor: selectionColor,
+    selectionControls: selectionControls,
+    textInputAction: textInputAction,
+    onChanged: onChanged,
+    onEditingComplete: onEditingComplete,
+    onSubmitted: onSubmitted,
+    onSelectionChanged: onSelectionChanged,
+    onSelectionHandleTapped: onSelectionHandleTapped,
+    rendererIgnoresPointer: rendererIgnoresPointer,
+    cursorWidth: cursorWidth,
+    cursorRadius: cursorRadius,
+    cursorOpacityAnimates: cursorOpacityAnimates,
+    cursorOffset: cursorOffset,
+    paintCursorAboveText: paintCursorAboveText,
+    keyboardAppearance: keyboardAppearance,
+    enableInteractiveSelection: enableInteractiveSelection,
+    scrollController: scrollController,
+    scrollPhysics: scrollPhysics,
+  );
 
   @override
-  AutoSizeEditableTextState createState() => AutoSizeEditableTextState();
+  AutoSizeEditableTextState createState() =>
+      AutoSizeEditableTextState(context: context);
 }
 
 class AutoSizeEditableTextState extends EditableTextState {
-  BoxConstraints _boxConstraints;
+  late BoxConstraints _boxConstraints;
+  BuildContext context;
+
+  AutoSizeEditableTextState({required this.context});
 
   @override
   void initState() {
@@ -174,7 +173,7 @@ class AutoSizeEditableTextState extends EditableTextState {
     DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(this.context);
 
     TextStyle style = this.widget.style;
-    if (style == null || style.inherit) {
+    if (style.inherit) {
       style = defaultTextStyle.style.merge(style);
     }
     if (style.fontSize == null) {
@@ -182,21 +181,24 @@ class AutoSizeEditableTextState extends EditableTextState {
     }
 
     String text = this.widget.controller.value.text;
-    int maxLines = this.widget.maxLines ?? defaultTextStyle.maxLines;
-    double fontSize = _calculateTextFontSize(this._boxConstraints, text, style, maxLines);
+    int maxLines = this.widget.maxLines ?? defaultTextStyle.maxLines ?? 1;
+    double fontSize = _calculateTextFontSize(
+        this._boxConstraints, text, style, maxLines);
 
     return this.widget.controller.buildTextSpan(
-          style: style.copyWith(fontSize: fontSize),
-          withComposing: !this.widget.readOnly,
-        );
+      context: context,
+      style: style.copyWith(fontSize: fontSize),
+      withComposing: !this.widget.readOnly,
+    );
   }
 
   void _didUpdateText() {
     setState(() {});
   }
 
-  double _calculateTextFontSize(BoxConstraints constraints, String text, TextStyle style, int maxLines) {
-    AutoSizeEditableText widget = this.widget;
+  double _calculateTextFontSize(BoxConstraints constraints, String text,
+      TextStyle style, int maxLines) {
+    AutoSizeEditableText widget = this.widget as AutoSizeEditableText;
     TextSpan textSpan = TextSpan(
       style: style,
       text: text,
@@ -204,12 +206,14 @@ class AutoSizeEditableTextState extends EditableTextState {
 
     int left;
     int right;
-    double userScale = widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(this.context);
+    double userScale = widget.textScaleFactor ??
+        MediaQuery.textScaleFactorOf(this.context);
 
-    List<double> presetFontSizes = widget.presetFontSizes?.reversed?.toList();
+    List<double>? presetFontSizes = widget.presetFontSizes?.reversed.toList();
     if (presetFontSizes == null) {
-      double defaultFontSize = style.fontSize.clamp(widget.minFontSize, widget.maxFontSize);
-      double defaultScale = defaultFontSize * userScale / style.fontSize;
+      double defaultFontSize = style.fontSize?.clamp(
+          widget.minFontSize, widget.maxFontSize) ?? 20.0;
+      double defaultScale = defaultFontSize * userScale / (style.fontSize ?? userScale);
 
       if (_checkTextFits(constraints, textSpan, defaultScale, maxLines)) {
         return defaultFontSize * userScale;
@@ -228,9 +232,9 @@ class AutoSizeEditableTextState extends EditableTextState {
       int mid = (left + (right - left) / 2).toInt();
 
       if (presetFontSizes == null) {
-        scale = mid * userScale * widget.stepGranularity / style.fontSize;
+        scale = mid * userScale * widget.stepGranularity / (style.fontSize ?? widget.stepGranularity);
       } else {
-        scale = presetFontSizes[mid] * userScale / style.fontSize;
+        scale = presetFontSizes[mid] * userScale / (style.fontSize ?? userScale);
       }
 
       if (_checkTextFits(constraints, textSpan, scale, maxLines)) {
@@ -255,8 +259,9 @@ class AutoSizeEditableTextState extends EditableTextState {
     return fontSize;
   }
 
-  bool _checkTextFits(BoxConstraints constraints, TextSpan textSpan, double scale, int maxLines) {
-    AutoSizeEditableText widget = this.widget;
+  bool _checkTextFits(BoxConstraints constraints, TextSpan textSpan,
+      double scale, int maxLines) {
+    AutoSizeEditableText widget = this.widget as AutoSizeEditableText;
 
     if (!widget.wrapWords) {
       List<String> words = textSpan.toPlainText().split(RegExp('\\s+'));
@@ -276,7 +281,8 @@ class AutoSizeEditableTextState extends EditableTextState {
 
       wordWrapPainter.layout(maxWidth: constraints.maxWidth);
 
-      if (wordWrapPainter.didExceedMaxLines || wordWrapPainter.width > constraints.maxWidth) {
+      if (wordWrapPainter.didExceedMaxLines ||
+          wordWrapPainter.width > constraints.maxWidth) {
         return false;
       }
     }

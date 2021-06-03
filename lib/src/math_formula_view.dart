@@ -35,7 +35,7 @@ class _MathFormulaViewState extends State<MathFormulaView> {
 
   MathFormula get _formula => this.widget.controller.formula;
 
-  MathSymbol get _symbol => this.widget.controller._symbol;
+  MathSymbol? get _symbol => this.widget.controller._symbol;
 
   int get _charOffset => this._textController.value.selection.baseOffset;
 
@@ -75,6 +75,7 @@ class _MathFormulaViewState extends State<MathFormulaView> {
     final ThemeData theme = Theme.of(context);
 
     return AutoSizeEditableText(
+      context: context,
       showCursor: true,
       readOnly: true,
       autofocus: true,
@@ -84,7 +85,7 @@ class _MathFormulaViewState extends State<MathFormulaView> {
       minFontSize: 12.0,
       style: TextStyle(
         fontSize: 14.0 * 2.0,
-        color: theme.primaryTextTheme.title.color,
+        color: theme.primaryColor,
       ),
       textAlign: TextAlign.right,
       cursorColor: Colors.grey,
@@ -108,7 +109,7 @@ class _MathFormulaViewState extends State<MathFormulaView> {
         );
   }
 
-  void _processMathSymbolAtCursor(MathSymbol symbol) {
+  void _processMathSymbolAtCursor(MathSymbol? symbol) {
     // The location of the char which is behind the cursor
     final cursor = _getFormulaCursorByCharOffset(this._formula.symbols, this._charOffset);
 
@@ -121,11 +122,11 @@ class MathFormulaViewController extends ChangeNotifier {
 
   bool disposed = false;
 
-  VoidCallback _masterListener;
+  VoidCallback? _masterListener;
 
-  MathSymbol _symbol;
+  MathSymbol? _symbol;
 
-  MathFormulaViewController({String expr}) : this._formula = MathFormula(expr: expr);
+  MathFormulaViewController({String? expr}) : this._formula = MathFormula(expr: expr);
 
   MathFormula get formula => this._formula;
 
@@ -136,7 +137,7 @@ class MathFormulaViewController extends ChangeNotifier {
       return;
     }
 
-    this._masterListener();
+    if (_masterListener != null) _masterListener!();
     notifyListeners();
   }
 
