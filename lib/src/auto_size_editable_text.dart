@@ -32,7 +32,7 @@ class AutoSizeEditableText extends EditableText {
   /// Predefines all the possible font sizes.
   ///
   /// **Important:** PresetFontSizes have to be in descending order.
-  late final List<double> presetFontSizes;
+  List<double>? presetFontSizes;
 
   /// Whether words which don't fit in one line should be wrapped.
   ///
