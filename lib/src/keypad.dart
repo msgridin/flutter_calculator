@@ -216,7 +216,7 @@ class _KeyPadState extends State<KeyPad> {
   }
 
   Widget _createUndoOpSymbolPad(BuildContext context) {
-    return Expanded(child: Container(color: Colors.black38));
+    return Expanded(child: Container(color: Colors.black38, child: Text('123')));
     final double fontSize = 14.0 * 1.5;
     final ShapeBorder shape = const RoundedRectangleBorder(borderRadius: BorderRadius.zero);
 
