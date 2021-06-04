@@ -74,53 +74,46 @@ class _CalculatorState extends State<Calculator> {
     final ThemeData theme = Theme.of(context);
     double height = MediaQuery.of(context).size.height / 3;
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.red,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text('123345667889'),
-          Container(
-            padding: const EdgeInsets.all(12.0),
-            color: theme.primaryColor,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                MathFormulaView(this._formulaViewController),
-                AutoSizeEditableText(
-                  context: context,
-                  readOnly: true,
-                  autofocus: false,
-                  showCursor: false,
-                  maxLines: 1,
-                  focusNode: FocusNode(),
-                  controller: this._formulaResultController,
-                  minFontSize: 14.0,
-                  style: TextStyle(
-                    fontSize: 14.0 * 3.0,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.right,
-                  cursorColor: Colors.white,
-                  backgroundCursorColor: theme.focusColor,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(12.0),
+          color: theme.primaryColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              MathFormulaView(this._formulaViewController),
+              AutoSizeEditableText(
+                context: context,
+                readOnly: true,
+                autofocus: false,
+                showCursor: false,
+                maxLines: 1,
+                focusNode: FocusNode(),
+                controller: this._formulaResultController,
+                minFontSize: 14.0,
+                style: TextStyle(
+                  fontSize: 14.0 * 3.0,
+                  color: Colors.white,
                 ),
-              ],
-            ),
+                textAlign: TextAlign.right,
+                cursorColor: Colors.white,
+                backgroundCursorColor: theme.focusColor,
+              ),
+            ],
           ),
-          Container(
-            height: height,
-            child: KeyPad(
-              controller: this._keyPadController,
-              onPress: this._handlePressedKey,
-            ),
+        ),
+        Container(
+          height: height,
+          child: KeyPad(
+            controller: this._keyPadController,
+            onPress: this._handlePressedKey,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -177,6 +170,8 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
         dialogBackgroundColor: Colors.transparent,
       ),
       child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
         child: Container(
           color: theme.dialogBackgroundColor,
           child: Column(
@@ -197,11 +192,11 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
                   child: ButtonBar(
                     children: <Widget>[
                       FlatButton(
-                        child: Text('Cancel', style: TextStyle(color: Colors.black)),
+                        child: Text('Cancel'),
                         onPressed: this._handleCancel,
                       ),
                       FlatButton(
-                        child: Text('OK', style: TextStyle(color: Colors.black)),
+                        child: Text('OK'),
                         onPressed: this._handleOk,
                       ),
                     ],
