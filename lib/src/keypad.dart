@@ -185,7 +185,7 @@ class _KeyPadState extends State<KeyPad> {
     final double fontSize = 14.0 * 1.5;
     final ShapeBorder shape = const RoundedRectangleBorder(borderRadius: BorderRadius.zero);
 
-    Color opPadColor = theme.primaryColor;
+    Color opPadColor = Colors.black38;
     Widget opPad;
     bool disabled = this._isDisabledKey(symbol);
 
