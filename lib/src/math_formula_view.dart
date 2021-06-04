@@ -85,7 +85,7 @@ class _MathFormulaViewState extends State<MathFormulaView> {
       minFontSize: 12.0,
       style: TextStyle(
         fontSize: 14.0 * 2.0,
-        color: theme.primaryColor,
+        color: Colors.white,
       ),
       textAlign: TextAlign.right,
       cursorColor: Colors.grey,
