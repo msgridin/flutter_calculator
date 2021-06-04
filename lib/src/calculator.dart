@@ -79,8 +79,11 @@ class _CalculatorState extends State<Calculator> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: theme.primaryColor,
+          ),
           padding: const EdgeInsets.all(12.0),
-          color: theme.primaryColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -173,10 +176,9 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
         child: Container(
-          color: theme.dialogBackgroundColor,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: Colors.red,
+            color: theme.dialogBackgroundColor,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

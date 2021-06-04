@@ -79,7 +79,7 @@ class _MathFormulaViewState extends State<MathFormulaView> {
       showCursor: true,
       readOnly: true,
       autofocus: true,
-      maxLines: 4,
+      maxLines: 1,
       focusNode: this._focusNode,
       controller: this._textController,
       minFontSize: 12.0,
