@@ -143,10 +143,12 @@ class _KeyPadState extends State<KeyPad> {
       );
     }).toList();
 
-    return GridView.custom(
-      gridDelegate: const _NumberPadGridDelegate(),
-      childrenDelegate: SliverChildListDelegate(numberPads, addRepaintBoundaries: false),
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
+    return Center(
+      child: GridView.custom(
+        gridDelegate: const _NumberPadGridDelegate(),
+        childrenDelegate: SliverChildListDelegate(numberPads, addRepaintBoundaries: false),
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+      ),
     );
   }
 
