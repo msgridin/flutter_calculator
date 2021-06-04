@@ -102,7 +102,7 @@ class MathFormulaEvaluator {
       // Process right bracket
       else if (symbol.isRightBracket) {
         _Mark? top;
-        while ((top = opsStack.length > 0 ? opsStack.last : null) != null && (top!.isOperator || !top!.isLeftBracket)) {
+        while ((top = opsStack.length > 0 ? opsStack.last : null) != null && (top!.isOperator || !top.isLeftBracket)) {
           opsStack.removeLast();
           output.add(top);
         }

@@ -32,7 +32,7 @@ class AutoSizeEditableText extends EditableText {
   /// Predefines all the possible font sizes.
   ///
   /// **Important:** PresetFontSizes have to be in descending order.
-  List<double>? presetFontSizes;
+  final List<double>? presetFontSizes;
 
   /// Whether words which don't fit in one line should be wrapped.
   ///
@@ -43,6 +43,7 @@ class AutoSizeEditableText extends EditableText {
   final BuildContext context;
 
   AutoSizeEditableText({
+    this.presetFontSizes,
     required this.context,
     required controller,
     required focusNode,
@@ -271,9 +272,9 @@ class AutoSizeEditableTextState extends EditableTextState {
           style: textSpan.style,
           text: words.join('\n'),
         ),
-        textAlign: widget.textAlign ?? TextAlign.left,
+        textAlign: widget.textAlign,
         textDirection: widget.textDirection ?? TextDirection.ltr,
-        textScaleFactor: scale ?? 1,
+        textScaleFactor: scale,
         maxLines: words.length,
         locale: widget.locale,
         strutStyle: widget.strutStyle,
@@ -289,9 +290,9 @@ class AutoSizeEditableTextState extends EditableTextState {
 
     TextPainter textPainter = TextPainter(
       text: textSpan,
-      textAlign: widget.textAlign ?? TextAlign.left,
+      textAlign: widget.textAlign,
       textDirection: widget.textDirection ?? TextDirection.ltr,
-      textScaleFactor: scale ?? 1,
+      textScaleFactor: scale,
       maxLines: maxLines,
       locale: widget.locale,
       strutStyle: widget.strutStyle,

@@ -26,9 +26,9 @@ import './auto_size_editable_text.dart';
 
 class Calculator extends StatefulWidget {
   final String? expr;
-  final MathFormulaViewController formulaViewController;
+  final MathFormulaViewController? formulaViewController;
 
-  Calculator({this.expr, required this.formulaViewController});
+  Calculator({this.expr, this.formulaViewController});
 
   @override
   State<StatefulWidget> createState() =>
@@ -135,7 +135,7 @@ class _CalculatorState extends State<Calculator> {
     final double result = this._formulaViewController.formula.evaluate();
 
     this._formulaResultController.value = this._formulaResultController.value.copyWith(
-          text: "= ${result?.toString() ?? '0.0'}",
+          text: "= ${result.toString()}",
         );
   }
 }

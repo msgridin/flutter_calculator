@@ -275,7 +275,7 @@ class _KeyPadState extends State<KeyPad> {
 class KeyPadController extends ChangeNotifier {
   List<MathSymbol> _disabledKeys;
 
-  KeyPadController(List<MathSymbol> disabledKeys) : this._disabledKeys = disabledKeys ?? [];
+  KeyPadController(List<MathSymbol> disabledKeys) : this._disabledKeys = disabledKeys;
 
   void disableKeys(List<MathSymbol> keys) {
     if (listEquals(this._disabledKeys, keys)) {
