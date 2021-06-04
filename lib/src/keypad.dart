@@ -129,7 +129,7 @@ class _KeyPadState extends State<KeyPad> {
         child: Text(
           symbol.text,
           style: TextStyle(
-            color: isClear ? Colors.white : Colors.grey,
+            color: isClear ? Colors.white : Colors.white,
             fontSize: 14.0 * 3.0,
           ),
         ),
@@ -201,7 +201,7 @@ class _KeyPadState extends State<KeyPad> {
         opPad = Text(
           symbol.text,
           style: TextStyle(
-            color: Colors.grey,
+            color: Colors.white,
             fontSize: fontSize,
           ),
         );

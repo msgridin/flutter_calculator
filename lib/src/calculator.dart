@@ -100,7 +100,7 @@ class _CalculatorState extends State<Calculator> {
                   color: Colors.white,
                 ),
                 textAlign: TextAlign.right,
-                cursorColor: Colors.grey,
+                cursorColor: Colors.white,
                 backgroundCursorColor: theme.focusColor,
               ),
             ],

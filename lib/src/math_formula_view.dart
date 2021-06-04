@@ -88,7 +88,7 @@ class _MathFormulaViewState extends State<MathFormulaView> {
         color: Colors.white,
       ),
       textAlign: TextAlign.right,
-      cursorColor: Colors.grey,
+      cursorColor: Colors.white,
       backgroundCursorColor: theme.focusColor,
     );
   }
