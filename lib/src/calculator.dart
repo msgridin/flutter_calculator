@@ -80,7 +80,7 @@ class _CalculatorState extends State<Calculator> {
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20),),
             color: theme.primaryColor,
           ),
           padding: const EdgeInsets.all(12.0),
