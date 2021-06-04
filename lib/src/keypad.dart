@@ -129,14 +129,14 @@ class _KeyPadState extends State<KeyPad> {
         child: Text(
           symbol.text,
           style: TextStyle(
-            color: isClear ? Colors.white : Colors.grey,
+            color: isClear ? Colors.grey : Colors.grey,
             fontSize: 14.0 * 3.0,
           ),
         ),
       );
 
       return FlatButton(
-        color: isClear ? Colors.black38 : null,
+        // color: isClear ? Colors.black38 : null,
         shape: const CircleBorder(),
         onPressed: () => this.widget.onPress(symbol),
         child: pad,
@@ -216,6 +216,7 @@ class _KeyPadState extends State<KeyPad> {
   }
 
   Widget _createUndoOpSymbolPad(BuildContext context) {
+    return SizedBox();
     final double fontSize = 14.0 * 1.5;
     final ShapeBorder shape = const RoundedRectangleBorder(borderRadius: BorderRadius.zero);
 
