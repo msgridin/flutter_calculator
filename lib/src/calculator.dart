@@ -72,7 +72,7 @@ class _CalculatorState extends State<Calculator> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    double height = MediaQuery.of(context).size.height / 3;
+    double height = MediaQuery.of(context).size.height / 2.5;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
