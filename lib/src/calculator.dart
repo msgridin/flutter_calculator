@@ -225,7 +225,7 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
   }
 }
 
-Future<double> showCalculator({
+Future<double?> showCalculator({
   required BuildContext context,
   String? expr,
   Locale? locale,
