@@ -69,7 +69,7 @@ const List<MathSymbol> opSymbols = <MathSymbol>[
   MathSymbols.multiply,
   MathSymbols.minus,
   MathSymbols.plus,
-  MathSymbols.undo,
+  // MathSymbols.undo,
   MathSymbols.delete,
 ];
 
