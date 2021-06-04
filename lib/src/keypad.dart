@@ -108,7 +108,7 @@ class _KeyPadState extends State<KeyPad> {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Flexible(
+        Expanded(
           child: this._createNumberSymbolsPane(context, numberSymbols),
         ),
         Container(

@@ -80,7 +80,11 @@ class _CalculatorState extends State<Calculator> {
       children: <Widget>[
         Container(
           padding: const EdgeInsets.all(12.0),
-          color: theme.primaryColor,
+          decoration: BoxDecoration(
+            color: theme.primaryColor,
+            borderRadius: BorderRadius.circular(20),
+          ),
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
