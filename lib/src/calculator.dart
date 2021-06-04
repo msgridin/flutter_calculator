@@ -74,50 +74,51 @@ class _CalculatorState extends State<Calculator> {
     final ThemeData theme = Theme.of(context);
     double height = MediaQuery.of(context).size.height / 3;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(12.0),
-          decoration: BoxDecoration(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(12.0),
             color: theme.primaryColor,
-            borderRadius: BorderRadius.circular(20),
-          ),
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              MathFormulaView(this._formulaViewController),
-              AutoSizeEditableText(
-                context: context,
-                readOnly: true,
-                autofocus: false,
-                showCursor: false,
-                maxLines: 1,
-                focusNode: FocusNode(),
-                controller: this._formulaResultController,
-                minFontSize: 14.0,
-                style: TextStyle(
-                  fontSize: 14.0 * 3.0,
-                  color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                MathFormulaView(this._formulaViewController),
+                AutoSizeEditableText(
+                  context: context,
+                  readOnly: true,
+                  autofocus: false,
+                  showCursor: false,
+                  maxLines: 1,
+                  focusNode: FocusNode(),
+                  controller: this._formulaResultController,
+                  minFontSize: 14.0,
+                  style: TextStyle(
+                    fontSize: 14.0 * 3.0,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.right,
+                  cursorColor: Colors.white,
+                  backgroundCursorColor: theme.focusColor,
                 ),
-                textAlign: TextAlign.right,
-                cursorColor: Colors.white,
-                backgroundCursorColor: theme.focusColor,
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Container(
-          height: height,
-          child: KeyPad(
-            controller: this._keyPadController,
-            onPress: this._handlePressedKey,
+          Container(
+            height: height,
+            child: KeyPad(
+              controller: this._keyPadController,
+              onPress: this._handlePressedKey,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
