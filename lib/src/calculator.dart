@@ -217,7 +217,7 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
   }
 
   void _handleCancel() {
-    Navigator.pop(context, null);
+    Navigator.pop(context, 0.00);
   }
 
   void _handleOk() {
