@@ -69,8 +69,8 @@ const List<MathSymbol> opSymbols = <MathSymbol>[
   MathSymbols.multiply,
   MathSymbols.minus,
   MathSymbols.plus,
-  MathSymbols.undo,
   MathSymbols.delete,
+  // MathSymbols.undo,
 ];
 
 typedef MathSymbolOnPress = void Function(MathSymbol symbol);
@@ -216,7 +216,7 @@ class _KeyPadState extends State<KeyPad> {
   }
 
   Widget _createUndoOpSymbolPad(BuildContext context) {
-    return Expanded(child: Container(color: Colors.black38, child: Text('123')));
+    return Container(color: Colors.black38, width: double.infinity, height: double.infinity);
     final double fontSize = 14.0 * 1.5;
     final ShapeBorder shape = const RoundedRectangleBorder(borderRadius: BorderRadius.zero);
 
