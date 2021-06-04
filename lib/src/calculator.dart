@@ -77,11 +77,13 @@ class _CalculatorState extends State<Calculator> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
+        color: Colors.red,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          Text('123345667889'),
           Container(
             padding: const EdgeInsets.all(12.0),
             color: theme.primaryColor,
