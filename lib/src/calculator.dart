@@ -174,6 +174,10 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
         child: Container(
           color: theme.dialogBackgroundColor,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.red,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
