@@ -63,7 +63,7 @@ class _CalculatorExampleDialogPageState extends State<CalculatorExampleDialogPag
   }
 
   void _showCalculatorDialog(BuildContext context) async {
-    final result = await showCalculator(context: context) ?? 0.00;
+    final result = await showCalculator(context: context);
 
     this._textController.value = this._textController.value.copyWith(
           text: result.toStringAsFixed(2),
