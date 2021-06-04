@@ -136,7 +136,7 @@ class _KeyPadState extends State<KeyPad> {
       );
 
       return FlatButton(
-        color: isClear ? theme.primaryColor : null,
+        color: isClear ? Colors.black38 : null,
         shape: const CircleBorder(),
         onPressed: () => this.widget.onPress(symbol),
         child: pad,
@@ -191,7 +191,7 @@ class _KeyPadState extends State<KeyPad> {
 
     switch (symbol) {
       case MathSymbols.delete:
-        opPadColor = theme.primaryColor;
+        opPadColor = Colors.black38;
         opPad = Text(
           symbol.text,
           style: TextStyle(color: Colors.white, fontSize: fontSize),
