@@ -193,8 +193,10 @@ class _KeyPadState extends State<KeyPad> {
       );
     }
 
-    final ShapeBorder shape =
-        const RoundedRectangleBorder(borderRadius: BorderRadius.zero);
+    // ✅ IMPORTANT: TextButton.styleFrom expects OutlinedBorder?, not ShapeBorder
+    final OutlinedBorder shape = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.zero,
+    );
 
     final bool disabled = _isDisabledKey(symbol);
 
@@ -237,7 +239,6 @@ class _KeyPadState extends State<KeyPad> {
   }
 
   Widget _createUndoOpSymbolPad(BuildContext context) {
-    // NOTE: Original code had early return; keeping behavior identical (undo/redo disabled UI placeholder)
     return Container(
       color: Colors.black38,
       width: double.infinity,
