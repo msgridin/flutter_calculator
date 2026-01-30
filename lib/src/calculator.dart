@@ -28,18 +28,24 @@ class Calculator extends StatefulWidget {
   final String? expr;
   final MathFormulaViewController? formulaViewController;
 
-  const Calculator({super.key, this.expr, this.formulaViewController});
+  const Calculator({
+    Key? key,
+    this.expr,
+    this.formulaViewController,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CalculatorState(
-      expr: expr, formulaViewController: formulaViewController);
+        expr: expr,
+        formulaViewController: formulaViewController,
+      );
 }
 
 class _CalculatorState extends State<Calculator> {
   final MathFormulaViewController _formulaViewController;
 
   final KeyPadController _keyPadController =
-      KeyPadController([MathSymbols.undo, MathSymbols.redo]);
+      KeyPadController(<MathSymbol>[MathSymbols.undo, MathSymbols.redo]);
   final TextEditingController _formulaResultController =
       TextEditingController();
 
@@ -153,7 +159,10 @@ class _CalculatorState extends State<Calculator> {
 class CalculatorDialog extends StatefulWidget {
   final String? expr;
 
-  const CalculatorDialog({super.key, required this.expr});
+  const CalculatorDialog({
+    Key? key,
+    required this.expr,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CalculatorDialogState(expr);
