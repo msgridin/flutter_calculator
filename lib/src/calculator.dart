@@ -14,63 +14,69 @@
  * limitations under the License.
  */
 
-import 'dart:async'
+import 'dart:async';
 
-import 'package:flutter/material.dart'
-import 'package:flutter/rendering.dart'
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-import './math_symbol.dart'
-import './math_formula_view.dart'
-import './keypad.dart'
-import './auto_size_editable_text.dart'
+import './math_symbol.dart';
+import './math_formula_view.dart';
+import './keypad.dart';
+import './auto_size_editable_text.dart';
 
 class Calculator extends StatefulWidget {
-  final String? expr
-  final MathFormulaViewController? formulaViewController
+  final String? expr;
+  final MathFormulaViewController? formulaViewController;
 
-  const Calculator({super.key, this.expr, this.formulaViewController})
+  const Calculator({super.key, this.expr, this.formulaViewController});
 
   @override
-  State<StatefulWidget> createState() =>
-      _CalculatorState(expr: expr, formulaViewController: formulaViewController)
+  State<StatefulWidget> createState() => _CalculatorState(
+      expr: expr, formulaViewController: formulaViewController);
 }
 
 class _CalculatorState extends State<Calculator> {
-  final MathFormulaViewController _formulaViewController
+  final MathFormulaViewController _formulaViewController;
 
-  final KeyPadController _keyPadController = KeyPadController([MathSymbols.undo, MathSymbols.redo])
-  final TextEditingController _formulaResultController = TextEditingController()
+  final KeyPadController _keyPadController =
+      KeyPadController([MathSymbols.undo, MathSymbols.redo]);
+  final TextEditingController _formulaResultController =
+      TextEditingController();
 
-  _CalculatorState({required String? expr, required MathFormulaViewController? formulaViewController})
-      : _formulaViewController = formulaViewController ?? MathFormulaViewController(expr: expr)
+  _CalculatorState({
+    required String? expr,
+    required MathFormulaViewController? formulaViewController,
+  }) : _formulaViewController =
+            formulaViewController ?? MathFormulaViewController(expr: expr);
 
   @override
   void initState() {
-    super.initState()
+    super.initState();
 
-    _formulaViewController.addListener(_handleFormulaUpdated)
-    _handleFormulaUpdated()
+    _formulaViewController.addListener(_handleFormulaUpdated);
+    _handleFormulaUpdated();
   }
 
   @override
   void didUpdateWidget(Calculator oldWidget) {
-    super.didUpdateWidget(oldWidget)
-    _handleFormulaUpdated()
+    super.didUpdateWidget(oldWidget);
+
+    _handleFormulaUpdated();
   }
 
   @override
   void dispose() {
-    _formulaViewController.dispose()
-    _keyPadController.dispose()
-    _formulaResultController.dispose()
+    _formulaViewController.dispose();
+    _keyPadController.dispose();
+    _formulaResultController.dispose();
 
-    super.dispose()
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context)
-    final double height = MediaQuery.of(context).size.height / 2.5
+    final ThemeData theme = Theme.of(context);
+    final double height = MediaQuery.of(context).size.height / 2.5;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -118,55 +124,56 @@ class _CalculatorState extends State<Calculator> {
           ),
         ),
       ],
-    )
+    );
   }
 
   void _handlePressedKey(MathSymbol symbol) {
-    _formulaViewController.process(symbol)
+    _formulaViewController.process(symbol);
 
-    final List<MathSymbol> disabledKeys = []
+    final List<MathSymbol> disabledKeys = <MathSymbol>[];
     if (!_formulaViewController.formula.canUndo()) {
-      disabledKeys.add(MathSymbols.undo)
+      disabledKeys.add(MathSymbols.undo);
     }
     if (!_formulaViewController.formula.canRedo()) {
-      disabledKeys.add(MathSymbols.redo)
+      disabledKeys.add(MathSymbols.redo);
     }
 
-    _keyPadController.disableKeys(disabledKeys)
+    _keyPadController.disableKeys(disabledKeys);
   }
 
   void _handleFormulaUpdated() {
-    final double result = _formulaViewController.formula.evaluate()
+    final double result = _formulaViewController.formula.evaluate();
 
     _formulaResultController.value = _formulaResultController.value.copyWith(
       text: '= ${result.toString()}',
-    )
+    );
   }
 }
 
 class CalculatorDialog extends StatefulWidget {
-  final String? expr
+  final String? expr;
 
-  const CalculatorDialog({super.key, required this.expr})
+  const CalculatorDialog({super.key, required this.expr});
 
   @override
-  State<StatefulWidget> createState() => _CalculatorDialogState(expr)
+  State<StatefulWidget> createState() => _CalculatorDialogState(expr);
 }
 
 class _CalculatorDialogState extends State<CalculatorDialog> {
-  final MathFormulaViewController _formulaViewController
+  final MathFormulaViewController _formulaViewController;
 
-  _CalculatorDialogState(String? expr) : _formulaViewController = MathFormulaViewController(expr: expr)
+  _CalculatorDialogState(String? expr)
+      : _formulaViewController = MathFormulaViewController(expr: expr);
 
   @override
   void dispose() {
-    _formulaViewController.dispose()
-    super.dispose()
+    _formulaViewController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context)
+    final ThemeData theme = Theme.of(context);
 
     return Theme(
       data: theme.copyWith(
@@ -201,11 +208,17 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
                     children: <Widget>[
                       TextButton(
                         onPressed: _handleCancel,
-                        child: Text('Cancel', style: TextStyle(color: theme.primaryColor)),
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(color: theme.primaryColor),
+                        ),
                       ),
                       TextButton(
                         onPressed: _handleOk,
-                        child: Text('OK', style: TextStyle(color: theme.primaryColor)),
+                        child: Text(
+                          'OK',
+                          style: TextStyle(color: theme.primaryColor),
+                        ),
                       ),
                     ],
                   ),
@@ -215,15 +228,15 @@ class _CalculatorDialogState extends State<CalculatorDialog> {
           ),
         ),
       ),
-    )
+    );
   }
 
   void _handleCancel() {
-    Navigator.pop(context, 0.00)
+    Navigator.pop(context, 0.00);
   }
 
   void _handleOk() {
-    Navigator.pop(context, _formulaViewController.formula.evaluate())
+    Navigator.pop(context, _formulaViewController.formula.evaluate());
   }
 }
 
@@ -234,15 +247,13 @@ Future<double?> showCalculator({
   TextDirection? textDirection,
   TransitionBuilder? builder,
 }) async {
-  Widget child = CalculatorDialog(
-    expr: expr,
-  )
+  Widget child = CalculatorDialog(expr: expr);
 
   if (textDirection != null) {
     child = Directionality(
       textDirection: textDirection,
       child: child,
-    )
+    );
   }
 
   if (locale != null) {
@@ -250,13 +261,13 @@ Future<double?> showCalculator({
       context: context,
       locale: locale,
       child: child,
-    )
+    );
   }
 
-  return await showDialog<double>(
+  return showDialog<double>(
     context: context,
     builder: (BuildContext context) {
-      return builder == null ? child : builder(context, child)
+      return builder == null ? child : builder(context, child);
     },
-  )
+  );
 }
